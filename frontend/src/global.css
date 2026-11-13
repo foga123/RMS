@@ -1,0 +1,1351 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design tokens. Mirrors src/theme/tokens.js — keep the two in step; tokens.js
+   is the source of truth and documents what each alias is for. */
+:root {
+  --brand-50: #ecfdf5;
+  --brand-100: #d1fae5;
+  --brand-200: #a7f3d0;
+  --brand-300: #6ee7b7;
+  --brand-400: #34d399;
+  --brand-500: #10b981;
+  --brand-600: #059669;
+  --brand-700: #047857;
+  --brand-800: #065f46;
+  --brand-900: #064e3b;
+
+  --brand-950: #022c22;
+
+  --neutral-0: #ffffff;
+  --neutral-50: #f8fafc;
+  --neutral-100: #f1f5f9;
+  --neutral-200: #e2e8f0;
+  --neutral-300: #cbd5e1;
+  --neutral-400: #94a3b8;
+  --neutral-500: #64748b;
+  --neutral-600: #475569;
+  --neutral-700: #334155;
+  --neutral-800: #1e293b;
+  --neutral-900: #0f172a;
+
+  /* Status scales. These existed in tokens.js but were never mirrored here, so
+     every status colour in the app stayed a literal hex with nothing to point
+     at. Values match tokens.js exactly. */
+  --danger-50: #fef2f2;
+  --danger-100: #fee2e2;
+  --danger-200: #fecaca;
+  --danger-500: #ef4444;
+  --danger-600: #dc2626;
+  --danger-700: #b91c1c;
+  --danger-800: #991b1b;
+
+  --warning-50: #fffbeb;
+  --warning-100: #fef3c7;
+  --warning-200: #fde68a;
+  --warning-500: #f59e0b;
+  --warning-600: #d97706;
+  --warning-700: #b45309;
+  --warning-800: #92400e;
+
+  --info-50: #f0f9ff;
+  --info-100: #e0f2fe;
+  --info-200: #bae6fd;
+  --info-500: #0ea5e9;
+  --info-600: #0284c7;
+  --info-700: #0369a1;
+  --info-800: #075985;
+
+  --surface-page: var(--neutral-50);
+  --surface-base: var(--neutral-0);
+  --surface-muted: var(--neutral-100);
+  --surface-brand: var(--brand-50);
+
+  --border-base: var(--neutral-200);
+  --border-strong: var(--neutral-300);
+  --border-brand: var(--brand-200);
+
+  --text-primary: var(--neutral-900);
+  --text-secondary: var(--neutral-600);
+  --text-muted: var(--neutral-500);
+  --text-faint: var(--neutral-400);
+  --text-brand: var(--brand-800);
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 9px;
+  --radius-xl: 12px;
+
+  --shadow-card: 0 10px 30px -22px rgba(15, 23, 42, 0.35);
+  --shadow-panel: 0 18px 40px -28px rgba(15, 23, 42, 0.35);
+  --shadow-modal: 0 32px 90px -36px rgba(15, 23, 42, 0.45);
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    /* The whole Tailwind side of the portal is sized in `rem`, so the root size
+       is the one dial that moves it. At the browser default of 16px the shell
+       rendered noticeably oversized at 100% zoom: 40px header buttons, 16px
+       gutters, 14px secondary text. 87.5% puts the base at 14px, which steps
+       every rem-based size down by an eighth and keeps the whole scale in
+       proportion — no utility class had to change.
+
+       Tailwind's breakpoints are declared in px, so this does not shift where
+       the responsive layouts switch over. Inline `px` styles are unaffected by
+       design; those were scaled at the source instead. */
+    font-size: 87.5%;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  /* The desktop density ladder.
+
+     87.5% (14px) above is the target for a real 1920x1080 at 100% zoom with no
+     OS display scaling. Below that the same 14px is proportionally heavier,
+     because the viewport shrank and the type did not — 14px on a 1280 laptop
+     eats a noticeably larger share of the row than it does on a 1920 monitor.
+
+     So the root steps down with the viewport instead of holding one value:
+     1280px -> 13px, 1536px -> ~13.4px, 1920px and up -> 14px, interpolated
+     continuously in between rather than jumping at breakpoints. Every rem-based
+     size in the shell — gutters, header, sidebar, breadcrumb, menu type —
+     follows it.
+
+     Floored at 1024px on purpose. Below that the layout has already reflowed to
+     the stacked arrangement, where the constraint is thumbs rather than pixels
+     and 14px is the right base; carrying the shrink down into it would make the
+     phone layout harder to use, not denser.
+
+     px rather than rem in the clamp: on the root element rem resolves against
+     the INITIAL font size (16px), not against this rule, so a rem here would
+     silently mean something other than it appears to. */
+  @media (min-width: 1024px) {
+    html {
+      font-size: clamp(13px, 0.15625vw + 11px, 14px);
+    }
+  }
+
+  /* Heading scale.
+
+     Tailwind's Preflight resets every heading to `font-size: inherit;
+     font-weight: inherit`, and nothing here put a scale back. So an <h2> was
+     body text unless the component that rendered it happened to set a size
+     inline — and 65 of the 71 headings in the app did exactly that, each
+     picking its own number. Measured across five screens, <h2> rendered at four
+     different sizes and <h3> at three, with one <h3> (28px) larger than every
+     <h2> on the same page.
+
+     These are the defaults, so a heading that states nothing is already right
+     and new code inherits the hierarchy instead of re-deciding it. Anything
+     setting its own size still wins — this adds a floor, it does not override.
+
+     px, matching tokens.js `font.size` and the Tailwind fontSize scale, so all
+     three systems name the same numbers. */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading, 'Outfit', 'Inter', system-ui, sans-serif);
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--text-primary);
+  }
+  h1 { font-size: 24.5px; }
+  h2 { font-size: 19.5px; }
+  h3 { font-size: 16px; }
+  h4 { font-size: 14px; }
+  h5, h6 { font-size: 12.5px; }
+
+  /* Table defaults, for the same reason as the headings above.
+
+     Preflight does not reset <th>, so a header cell that states no font keeps
+     the user-agent's `bold` at the inherited body size — 14px/700. The shared
+     Table component styles its own headers at 11px/600, so every hand-rolled
+     table in the app rendered a noticeably larger, heavier header row than
+     every table that used the component. A sweep of twelve screens found four
+     different header treatments.
+
+     Components that set their own size still override this; it only replaces
+     the browser default with the app's own. */
+  th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  td {
+    font-size: 12.5px;
+  }
+
+  html, body, #root {
+    @apply h-full antialiased text-slate-800 bg-slate-50;
+    min-width: 0;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  img,
+  svg,
+  video,
+  canvas {
+    max-width: 100%;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+    max-width: 100%;
+  }
+
+  :where(main, section, article, aside, header, footer, div) {
+    min-width: 0;
+  }
+}
+
+@layer components {
+  /**
+   * Flat surface under every authenticated page.
+   *
+   * This carried a three-stop diagonal gradient, two radial tints on ::before
+   * and an 84px-blurred green circle on ::after — four decorative layers behind
+   * every screen. At a glance it read as tinting rather than as design, and it
+   * put a full-viewport blur into the paint path of every scroll. The stacking
+   * context is kept because content positions against it.
+   */
+  .portal-theme-bg {
+    position: relative;
+    isolation: isolate;
+    background: var(--surface-page);
+  }
+
+  /**
+   * Solid, not translucent-over-blur. The glass had nothing left to refract
+   * once the background went flat, and backdrop-filter forces a repaint of
+   * everything beneath the sidebar on each scroll frame.
+   */
+  .portal-theme-panel {
+    background: var(--surface-base);
+  }
+
+  .ui-archive-button {
+    background: #facc15 !important;
+    border: 1px solid #eab308 !important;
+    color: #422006 !important;
+    box-shadow: 0 8px 18px -14px rgba(161, 98, 7, 0.6);
+    transition:
+      background-color 140ms ease,
+      border-color 140ms ease,
+      color 140ms ease,
+      box-shadow 140ms ease,
+      transform 140ms ease !important;
+  }
+
+  .ui-archive-button:hover:not(:disabled) {
+    background: #eab308 !important;
+    border-color: #ca8a04 !important;
+    color: #422006 !important;
+    box-shadow: 0 12px 24px -18px rgba(161, 98, 7, 0.75);
+  }
+
+  .ui-archive-button:active:not(:disabled) {
+    background: #ca8a04 !important;
+    border-color: #a16207 !important;
+    color: #ffffff !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    transform: translateY(1px);
+  }
+
+  .ui-archive-button:focus-visible {
+    outline: 2px solid rgba(202, 138, 4, 0.32);
+    outline-offset: 2px;
+  }
+
+  .ui-archive-button:disabled {
+    background: #fde68a !important;
+    border-color: #fcd34d !important;
+    color: #92400e !important;
+    box-shadow: none;
+  }
+
+  /* Skeleton placeholder: a light band sweeps across a slate block while data
+     loads. Colours match the slate palette the tables already use
+     (#f1f5f9 header rows, #e2e8f0 borders) so placeholders sit in the same
+     visual family as the real content they stand in for. */
+  .ui-skeleton {
+    position: relative;
+    overflow: hidden;
+    background-color: #e9eef5;
+    border-radius: 5px;
+    /* Never let a placeholder collapse to nothing if height is unset. */
+    min-height: 0.75rem;
+  }
+
+  .ui-skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      rgba(241, 245, 249, 0) 0%,
+      rgba(248, 250, 252, 0.85) 50%,
+      rgba(241, 245, 249, 0) 100%
+    );
+    animation: ui-skeleton-sweep 1.4s linear infinite;
+  }
+
+  @keyframes ui-skeleton-sweep {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  /* Respect users who ask the OS to reduce motion: keep the placeholder shape
+     and a gentle fade, but drop the travelling highlight. */
+  @media (prefers-reduced-motion: reduce) {
+    .ui-skeleton::after {
+      animation: ui-skeleton-fade 1.8s ease-in-out infinite;
+      transform: none;
+      background: rgba(248, 250, 252, 0.6);
+    }
+
+    @keyframes ui-skeleton-fade {
+      0%, 100% { opacity: 0.25; }
+      50% { opacity: 0.7; }
+    }
+  }
+
+  /* A short rise-and-fade for a section as it first appears — a dashboard
+     overview settling in rather than snapping. Reused across dashboards so the
+     motion is defined once and stays consistent. Layered children can stagger
+     with an inline animation-delay. Disabled entirely under reduced motion. */
+  .ui-rise-in {
+    animation: ui-rise-in 260ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+
+  @keyframes ui-rise-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-rise-in { animation: none !important; }
+  }
+}
+
+/* ---------------------------------------------------------------- settings
+   Settings uses a nav rail rather than a card grid. Six selection cards sat
+   above every panel and pushed the actual controls below the fold; a rail costs
+   no vertical space, keeps every section one click away, and puts the panel at
+   the top of the viewport.
+
+   Hover, focus and selected states live here because the surrounding panels are
+   inline-styled and inline styles cannot express them. */
+@layer components {
+  .settings-layout {
+    display: grid;
+    gap: 12px;
+    align-items: start;
+  }
+
+  .settings-nav {
+    display: flex;
+    gap: 6px;
+    /* Below the breakpoint the rail becomes a horizontal strip, so a long
+       section list stays reachable without stacking six full-width blocks. */
+    overflow-x: auto;
+    padding-bottom: 3px;
+    scrollbar-width: thin;
+  }
+
+  .settings-nav-item {
+    appearance: none;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 179px;
+    padding: 8px 9px;
+    border: 1px solid var(--border-base);
+    border-radius: var(--radius-lg);
+    background: var(--surface-base);
+    color: var(--text-secondary);
+    text-align: left;
+    cursor: pointer;
+    transition:
+      background-color 120ms ease,
+      border-color 120ms ease,
+      color 120ms ease;
+  }
+
+  .settings-nav-item:hover {
+    border-color: var(--border-strong);
+    background: var(--surface-page);
+  }
+
+  .settings-nav-item:focus-visible {
+    outline: 2px solid var(--brand-600);
+    outline-offset: 2px;
+  }
+
+  .settings-nav-item[aria-selected="true"] {
+    border-color: var(--brand-700);
+    background: var(--brand-50);
+    color: var(--text-brand);
+  }
+
+  .settings-nav-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 29px;
+    height: 29px;
+    border-radius: var(--radius-md);
+    background: var(--surface-muted);
+    color: var(--text-secondary);
+    transition: background-color 120ms ease, color 120ms ease;
+  }
+
+  .settings-nav-item[aria-selected="true"] .settings-nav-icon {
+    background: var(--brand-100);
+    color: var(--brand-800);
+  }
+
+  .settings-nav-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.3;
+  }
+
+  .settings-nav-item[aria-selected="true"] .settings-nav-title {
+    color: var(--brand-900);
+  }
+
+  /* The summary is live status ("CAPTCHA is currently enabled"), so it is
+     clamped rather than wrapped — the rail must not reflow as values change. */
+  .settings-nav-summary {
+    font-size: 10.5px;
+    line-height: 1.35;
+    color: var(--text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @media (min-width: 960px) {
+    .settings-layout {
+      grid-template-columns: 228px minmax(0, 1fr);
+    }
+
+    .settings-nav {
+      position: sticky;
+      top: 6px;
+      flex-direction: column;
+      overflow-x: visible;
+      padding-bottom: 0;
+    }
+
+    .settings-nav-item {
+      min-width: 0;
+      width: 100%;
+    }
+  }
+}
+
+/* Settings form controls. These panels are inline-styled, so focus and hover
+   states had nowhere to live: the number inputs shipped with no focus ring at
+   all, and the expiry presets faked hover by mutating element.style from
+   onMouseEnter/onMouseLeave handlers. Both belong in CSS. */
+@layer components {
+  .settings-field {
+    width: 100%;
+    min-width: 0;
+    padding: 6px 8px;
+    font-size: 12.5px;
+    color: var(--text-primary);
+    background: var(--surface-base);
+    border: 1px solid var(--border-base);
+    border-radius: var(--radius-sm);
+    transition: border-color 120ms ease, box-shadow 120ms ease;
+  }
+
+  .settings-field:hover:not(:disabled) {
+    border-color: var(--border-strong);
+  }
+
+  .settings-field:focus {
+    outline: none;
+    border-color: var(--brand-600);
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+  }
+
+  .settings-field:disabled {
+    background: var(--surface-page);
+    color: var(--text-faint);
+    cursor: not-allowed;
+  }
+
+  .settings-chip {
+    appearance: none;
+    min-height: 32px;
+    padding: 6px 9px;
+    font-size: 11.5px;
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--text-secondary);
+    background: var(--surface-base);
+    border: 1px solid var(--border-base);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+  }
+
+  .settings-chip:hover:not(:disabled) {
+    border-color: var(--brand-700);
+    background: var(--brand-50);
+    color: var(--text-brand);
+  }
+
+  .settings-chip:focus-visible {
+    outline: 2px solid var(--brand-600);
+    outline-offset: 2px;
+  }
+
+  .settings-chip[aria-pressed="true"] {
+    border-color: var(--brand-800);
+    background: var(--brand-50);
+    color: var(--text-brand);
+  }
+
+  .settings-chip:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+/* ------------------------------------------------------------------ buttons
+   The Button component was pure inline styles, so 107 buttons across the app
+   had no hover, no active and no focus-visible state — inline styles cannot
+   express a pseudo-class. Base styling moves here; Button still spreads its
+   `style` prop last, so the call sites that override background inline
+   (RolesPage's edit/restore buttons and friends) keep working. */
+@layer components {
+  .ui-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    max-width: 100%;
+    min-width: 0;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    /* Body step of the scale. The clamp here resolved to 13.3px, which is not a
+       step on it, so button labels sat fractionally above the text they act on. */
+    font-size: 12.5px;
+    font-weight: 600;
+    line-height: 1.2;
+    cursor: pointer;
+    transition:
+      background-color 120ms ease,
+      border-color 120ms ease,
+      color 120ms ease;
+  }
+
+  .ui-btn:focus-visible {
+    outline: 2px solid var(--brand-600);
+    outline-offset: 2px;
+  }
+
+  .ui-btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+
+  .ui-btn--sm { padding: 5px 8px; }
+  .ui-btn--md { padding: 6px 11px; }
+  .ui-btn--lg { padding: 8px 12px; }
+
+  .ui-btn--primary {
+    background: var(--brand-800);
+    border-color: var(--brand-800);
+    color: var(--neutral-0);
+  }
+  .ui-btn--primary:hover:not(:disabled) {
+    background: var(--brand-900);
+    border-color: var(--brand-900);
+  }
+
+  .ui-btn--secondary {
+    background: var(--surface-page);
+    border-color: var(--border-base);
+    color: var(--text-primary);
+  }
+  .ui-btn--secondary:hover:not(:disabled) {
+    background: var(--surface-muted);
+    border-color: var(--border-strong);
+  }
+
+  .ui-btn--danger {
+    background: #b91c1c;
+    border-color: #b91c1c;
+    color: var(--neutral-0);
+  }
+  .ui-btn--danger:hover:not(:disabled) {
+    background: #991b1b;
+    border-color: #991b1b;
+  }
+
+  .ui-btn--ghost {
+    background: transparent;
+    color: var(--text-secondary);
+  }
+  .ui-btn--ghost:hover:not(:disabled) {
+    background: var(--surface-muted);
+    color: var(--text-primary);
+  }
+
+  .ui-btn--link {
+    padding: 0;
+    background: transparent;
+    color: var(--brand-600);
+  }
+  .ui-btn--link:hover:not(:disabled) {
+    color: var(--brand-800);
+    text-decoration: underline;
+  }
+}
+
+/* Focus indication for the ~112 raw form controls that are styled inline and
+   therefore ship with none. Scoped to :focus-visible so it appears for keyboard
+   users without ringing on every mouse click. Shared components that set their
+   own focus ring live in the utilities layer and still win over this. */
+@layer base {
+  input:not([type="checkbox"]):not([type="radio"]):focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--brand-600);
+    outline-offset: 1px;
+  }
+}
+
+/* Profile dialog tabs. Underline rather than pill, so the strip reads as a
+   continuation of the dialog header instead of a row of buttons. */
+@layer components {
+  .profile-tab {
+    position: relative;
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    flex: 0 0 auto;
+    padding: 8px 11px;
+    border: 0;
+    /* Transparent at rest so the selected underline does not shift the row. */
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 120ms ease, border-color 120ms ease;
+  }
+
+  .profile-tab:hover {
+    color: var(--text-primary);
+  }
+
+  .profile-tab:focus-visible {
+    outline: 2px solid var(--brand-600);
+    outline-offset: -2px;
+  }
+
+  .profile-tab[aria-selected="true"] {
+    color: var(--brand-800);
+    font-weight: 600;
+    border-bottom-color: var(--brand-700);
+  }
+
+  .profile-tab-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 9999px;
+    background: var(--warning-500);
+  }
+}
+
+/* ------------------------------------------------------------- SweetAlert2
+   Every confirm, error and success popup in the portal is a SweetAlert2
+   dialog, and the library ships its own stylesheet — injected into <head> at
+   runtime by `sweetalert2.all.js`, so none of the sizing work in this file or
+   in the components reached it. Left alone it renders at its own scale: a 32em
+   popup with a 30px title and a 70px icon, which next to the portal's own
+   dialogs (now ~340px wide with a 16px title) looked like it came from a
+   different application.
+
+   The library is entirely `em`-relative below `.swal2-popup`, so the popup's
+   own `font-size` is the master dial and the custom properties handle the rest.
+   Overrides sit on `.swal2-container` rather than `:root`: custom properties
+   resolve by inheritance proximity, so a declaration on the container beats the
+   library's `:root` defaults no matter which stylesheet the browser saw last.
+   Ordinary properties are safe too — the library's own selectors are written
+   with `:where()`, which contributes zero specificity. */
+.swal2-container {
+  --swal2-width: 28em;
+  --swal2-padding: 0 0 1em;
+  --swal2-container-padding: 0.5em;
+  --swal2-border-radius: 9px;
+  --swal2-title-padding: 0.75em 0.9em 0;
+  --swal2-html-container-padding: 0.7em 1.3em 0.25em;
+  --swal2-actions-margin: 1em auto 0;
+  --swal2-close-button-font-size: 1.9em;
+  /* The status icon is the single largest element in a confirm dialog. */
+  --swal2-icon-zoom: 0.7;
+  --swal2-confirm-button-border-radius: var(--radius-sm);
+  --swal2-cancel-button-border-radius: var(--radius-sm);
+  --swal2-deny-button-border-radius: var(--radius-sm);
+  --swal2-input-border-radius: var(--radius-sm);
+}
+
+/* The one value everything inside the popup is measured against. The library
+   sets `1rem`; at the 87.5% root that is already 14px, and 12px lines the
+   dialog up with the portal's own body text. */
+.swal2-popup {
+  font-size: 12px;
+}
+
+.swal2-title {
+  font-size: 1.35em;
+  font-weight: 600;
+}
+
+.swal2-html-container {
+  font-size: 1em;
+}
+
+.swal2-styled {
+  margin: 0.25em;
+  padding: 0.55em 0.95em;
+  font-size: 1em;
+}
+
+/* Scoped through `.swal2-container` on purpose. The library styles its inputs
+   with `div:where(.swal2-container) .swal2-input`, which carries a real class
+   in it — unlike its other rules — so a bare `.swal2-input` here would be the
+   weaker selector and lose. */
+.swal2-container .swal2-input,
+.swal2-container .swal2-textarea,
+.swal2-container .swal2-select {
+  font-size: 1em;
+}
+
+.swal2-container .swal2-input {
+  height: 2.4em;
+}
+
+.swal2-footer {
+  margin: 1em 0 0;
+  padding: 0.8em 1em 0;
+  font-size: 0.9em;
+}
+
+/* Toasts are positioned corner notifications — login success, profile saves and
+   the live notification pops — and the library fixes the container at 360px,
+   wider than the 340px notification dropdown they sit beside.
+
+   The class is doubled to outrank the library's own
+   `body.swal2-toast-shown .swal2-container`, which is otherwise an exact
+   specificity tie. SweetAlert2 appends its stylesheet to <head> at runtime, so
+   it is always the later sheet and wins every tie on source order. */
+body.swal2-toast-shown .swal2-container.swal2-container {
+  width: 300px;
+}
+
+/* ---------------------------------------------------------------------------
+   Small-screen safety net.
+
+   The shell (RoleLayout, Sidebar, Header) already adapts through Tailwind
+   breakpoints, but the feature pages are styled inline — and an inline
+   `min-width` cannot be undone by an ordinary rule. Roughly 70 controls carry
+   a fixed minimum between 119px and 272px, which on a 360px phone can only
+   push the page sideways.
+
+   These declarations are deliberately `!important` and deliberately scoped to
+   narrow viewports: above 640px the fixed minimums are doing useful work and
+   are left alone.
+   --------------------------------------------------------------------------- */
+
+/* Media should never be wider than what holds it, at any size. */
+img,
+video,
+canvas {
+  max-width: 100%;
+}
+
+/* A long unbroken string (an email, a URL, a student number) should wrap
+   rather than widen the page. */
+body {
+  overflow-wrap: break-word;
+}
+
+/* Tablets and small laptops. The shell already drops the sidebar rail below
+   `lg` (1024px), but the fixes below used to start at 640px, so 640-1023px got
+   neither: no rail, yet controls still holding a 119-272px floor. Here the
+   floors are dropped but the controls keep sharing a row - a 768px screen has
+   the width for two or three across, and forcing one per row would waste it.
+   Full-width stacking starts at 640px, in the block after this one. */
+@media (max-width: 1024px) {
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: 640px) {
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* Filter bars are flex rows of controls sized with `flex: 1 1 204px`; on a
+     phone each one should take the full width instead of squeezing. */
+  input:not([type="checkbox"]):not([type="radio"]),
+  select {
+    flex-basis: 100% !important;
+  }
+
+  /* ...except where the control is one cell of a composed row rather than a
+     filter. The CAPTCHA answer sits between the two operands and the refresh
+     button; a 100% basis makes it claim a line of its own, which pushed the
+     operands onto one row, the answer onto a second and the refresh button
+     onto a third. The row is sized to fit a 320px screen on its own. */
+  .captcha-row input {
+    flex-basis: auto !important;
+  }
+
+  /* iOS Safari zooms the whole viewport whenever a control it focuses is
+     under 16px, and does not zoom back out on blur — on the sign-in screens
+     that leaves the card half off-screen mid-login. The auth screens' own
+     inputs are already sized in the markup; this covers the shared `Input`,
+     whose clamp bottoms out at 14px and which cannot be raised globally
+     without also moving it on desktop. */
+  .auth-no-zoom input,
+  .auth-no-zoom select,
+  .auth-no-zoom textarea {
+    font-size: 16px;
+  }
+
+  /* A safety net for grids asking for a fixed track floor. As of now it catches
+     nothing, and that is the intended end state — do not read this list as a
+     description of the source.
+
+     It matches the bare `minmax(Npx` form by literal string. Every such grid in
+     the app has since been rewritten as `minmax(min(Npx, 100%), 1fr)`, whose
+     floor can never exceed the container, so they collapse on their own at
+     every width rather than only below 640px. Verified: zero bare occurrences
+     remain, and the one place that builds a track at runtime (EvenGrid) emits
+     the guarded form too.
+
+     Kept, not deleted, because it costs nothing and would catch a bare floor
+     reintroduced at one of these exact values. Two caveats if you ever rely on
+     it: the values are literal, so a new floor at any other number is not
+     covered; and it is `!important`, so a grid that deliberately wants several
+     columns on a phone at one of these widths would be overruled. Prefer
+     writing the guarded form at the source. */
+  [style*="minmax(153px"],
+  [style*="minmax(162px"],
+  [style*="minmax(187px"],
+  [style*="minmax(204px"],
+  [style*="minmax(238px"],
+  [style*="minmax(255px"],
+  [style*="minmax(272px"],
+  [style*="minmax(289px"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Most tables sit in a wrapper that scrolls, but twelve do not - ten of them
+     on the Reports page. Below 640px every table becomes its own scroll box, so
+     a wide one slides sideways inside its card instead of widening the document.
+     Tables that already have a scrolling wrapper are unaffected in practice:
+     the outer box reaches its limit first.
+
+     `table-layout: fixed` is excluded. Those tables pair it with `width: 100%`,
+     so their columns divide the space available and cannot overflow to begin
+     with - and `display: block` would take the fixed layout away and let the
+     columns resize to their content, which is the very thing being avoided.
+     The eleven tables on the Reports page are all of this kind. */
+  table:not([style*="table-layout: fixed"]) {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+}
+
+/* ============================================================ student survey
+   The survey flow's interaction states live here rather than inline.
+   Hover, :focus-visible and keyframes cannot be expressed in a style object,
+   which is why the older survey markup had none of them. */
+
+.survey-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  text-align: left;
+  width: 100%;
+  background: var(--surface-base);
+  border: 1px solid var(--border-base);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+}
+
+.survey-card:hover:not(:disabled) {
+  border-color: var(--brand-600);
+  box-shadow: 0 6px 20px rgba(2, 6, 23, 0.08);
+  transform: translateY(-2px);
+}
+
+.survey-card:focus-visible {
+  outline: 2px solid var(--brand-600);
+  outline-offset: 2px;
+}
+
+.survey-card:disabled { cursor: default; opacity: 0.85; }
+
+/* The completed card is still readable and still opens — it just stops
+   advertising itself as the next thing to do. */
+.survey-card[data-status="completed"],
+/* An empty submissions folder on the staff side is the same idea: it opens,
+   it just has nothing in it to check yet. */
+.survey-card[data-empty="true"] { background: var(--surface-page); }
+
+.survey-card-icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  background: var(--brand-100);
+  color: var(--brand-800);
+}
+
+.survey-card[data-status="completed"] .survey-card-icon,
+.survey-card[data-empty="true"] .survey-card-icon {
+  background: var(--surface-muted);
+  color: var(--text-secondary);
+}
+
+/* An inactive survey is closed, not empty — it may hold hundreds of answers and
+   still take no new ones. Both states are grey, so they are separated by depth
+   rather than hue: the empty card is barely tinted (--surface-page), a retired
+   one goes a step further down (--surface-muted) and takes a stronger border.
+   The card still opens; what is retired is the survey, not the record of who
+   answered it. */
+.survey-card[data-inactive="true"] {
+  background: var(--surface-muted);
+  border-color: var(--border-strong);
+}
+
+.survey-card[data-inactive="true"]:hover:not(:disabled) {
+  border-color: var(--neutral-400);
+}
+
+.survey-card[data-inactive="true"] .survey-card-icon {
+  background: var(--neutral-200);
+  color: var(--text-secondary);
+}
+
+/* The word itself, because depth alone is a weak signal and this pair is two
+   shades of the same colour. Whatever the card looks like, it says "Inactive". */
+.survey-card-flag {
+  display: inline-block;
+  padding: 0 5px;
+  border-radius: 4px;
+  background: var(--neutral-200);
+  color: var(--text-secondary);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* One question at a time, so each step arrives rather than snapping in. */
+.survey-step { animation: survey-step-in 220ms ease both; }
+
+@keyframes survey-step-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.survey-progress-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--surface-muted);
+  overflow: hidden;
+}
+
+.survey-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--brand-600);
+  transition: width 260ms ease;
+}
+
+/* A whole-row target: the label is the hit area, not just the 14px control. */
+.survey-choice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 12px;
+  border: 1px solid var(--border-base);
+  border-radius: 10px;
+  background: var(--surface-base);
+  cursor: pointer;
+  transition: border-color 120ms ease, background-color 120ms ease;
+}
+
+.survey-choice:hover { border-color: var(--brand-400, var(--brand-600)); background: var(--brand-50); }
+.survey-choice[data-checked="true"] { border-color: var(--brand-600); background: var(--brand-50); }
+.survey-choice:focus-within { outline: 2px solid var(--brand-600); outline-offset: 2px; }
+.survey-choice input { margin-top: 2px; flex-shrink: 0; width: 16px; height: 16px; accent-color: var(--brand-700); }
+
+.survey-review-row {
+  display: grid;
+  gap: 4px;
+  padding: 11px 12px;
+  border: 1px solid var(--border-base);
+  border-radius: 10px;
+  background: var(--surface-page);
+}
+
+.survey-done-mark {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--brand-100);
+  color: var(--brand-800);
+  animation: survey-pop 320ms cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+
+@keyframes survey-pop {
+  from { opacity: 0; transform: scale(0.7); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .survey-card,
+  .survey-step,
+  .survey-progress-fill,
+  .survey-done-mark { animation: none !important; transition: none !important; }
+  .survey-card:hover:not(:disabled) { transform: none; }
+}
+
+/* The workspace tab bar. A tab is a real button, so it needs the hover and
+   focus states a style object cannot carry. */
+.survey-tab {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  padding: 8px 12px;
+  margin-bottom: -1px;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 6px 6px 0 0;
+  transition: color 140ms ease, border-color 140ms ease, background 140ms ease;
+}
+
+.survey-tab:hover { color: var(--brand-800); background: var(--surface-page); }
+.survey-tab:focus-visible { outline: 2px solid var(--brand-600); outline-offset: -2px; }
+
+.survey-tab[data-active="true"] {
+  color: var(--brand-800);
+  border-bottom-color: var(--brand-600);
+}
+
+/*
+ * The editable survey title in a folder header.
+ *
+ * It has to read as a title first and a control second, so it borrows the
+ * surrounding type entirely and shows its edges only on hover or keyboard
+ * focus. The pencil is invisible until then for the same reason: a mark parked
+ * permanently beside the name competes with the name.
+ */
+.survey-folder-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+  appearance: none;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  padding: 2px 6px;
+  margin-left: -6px;
+  font: inherit;
+  color: var(--text-primary);
+  text-align: left;
+  cursor: text;
+  transition: background 140ms ease, border-color 140ms ease;
+}
+
+.survey-folder-title svg {
+  opacity: 0;
+  color: var(--text-muted);
+  transition: opacity 140ms ease;
+}
+
+.survey-folder-title:hover {
+  background: var(--surface-page);
+  border-color: var(--border-base);
+}
+
+.survey-folder-title:hover svg { opacity: 1; }
+
+.survey-folder-title:focus-visible {
+  outline: 2px solid var(--brand-600);
+  outline-offset: 1px;
+}
+
+/* Touch and keyboard never hover, so the affordance would never appear. */
+.survey-folder-title:focus-visible svg { opacity: 1; }
+
+@media (hover: none) {
+  .survey-folder-title svg { opacity: 1; }
+}
+
+/* ---------------------------------------------------------------- sidebar */
+
+/*
+ * A thin scrollbar for the nav, so a long module list can scroll without the
+ * bar sitting on top of what it scrolls.
+ *
+ * The rail is ~68px wide when collapsed and the icons are 20px centred in it.
+ * Windows renders a classic ~17px scrollbar that takes real width, so once an
+ * admin had enough modules to overflow, the bar overlapped the icons on the
+ * right edge of the rail. Firefox gets `scrollbar-width: thin`; Chromium/Edge
+ * get an 8px webkit bar. Paired with `scrollbar-gutter: stable` on the element,
+ * the small remaining gutter is reserved on both states, so the icons stay put
+ * whether the bar is showing or not.
+ */
+.sidebar-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.6) transparent;
+}
+.sidebar-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(148, 163, 184, 0.6);
+  border-radius: 9999px;
+}
+.sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/*
+ * The column width. Here rather than inline on the element so it can share the
+ * curve with the children below and be switched off with them under
+ * prefers-reduced-motion — a media query cannot reach an inline style, so the
+ * panel used to keep sliding for readers who had asked the interface to hold
+ * still.
+ */
+.sidebar-column {
+  transition: width 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/*
+ * A collapse that reads as one movement instead of three.
+ *
+ * The column width was already transitioned, but everything inside it changed
+ * at frame 0: labels were unmounted outright, section headings flipped to
+ * sr-only, and the padding classes swapped. So the eye saw the text vanish, the
+ * icons jump to a new x, and only then the panel slide - three events for one
+ * gesture, which is what read as abrupt.
+ *
+ * The fix is to keep the labels mounted and animate them out. A label collapses
+ * its own width and its own leading gap, so the icon glides to the centre of
+ * the rail rather than being snapped there by a changed padding class.
+ *
+ * `max-width` rather than `width` because the labels are intrinsically sized -
+ * there is no width to animate from, and 14rem is comfortably past the widest
+ * item in a 296px rail.
+ */
+.sidebar-label {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 14rem;
+  opacity: 1;
+  /* The gap between icon and label lives here, not on the flex container, so it
+     can collapse with the label. A `gap` on the parent cannot be animated away
+     per-child, and would leave a 12px hole on the rail. */
+  margin-inline-start: 0.75rem;
+  transition:
+    max-width 200ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 130ms ease,
+    margin-inline-start 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-rail .sidebar-label {
+  max-width: 0;
+  opacity: 0;
+  margin-inline-start: 0;
+}
+
+/*
+ * The nav button. Padding is transitioned so the icon travels to the centre of
+ * the 68px rail instead of arriving there instantly.
+ *
+ * The rail's inner box is 68px less the nav's 8px gutters = 52px; centring a
+ * 20px icon in it wants 16px of lead. Expanded that lead is 12px, so the icon
+ * moves 4px over the same 200ms the label takes to fold away.
+ */
+.sidebar-nav-button {
+  transition:
+    padding 200ms cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 120ms ease,
+    color 120ms ease;
+}
+
+/* The brand wordmark, folded away on the same curve as the nav labels. */
+.sidebar-brand-text {
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 14rem;
+  opacity: 1;
+  transition:
+    max-width 200ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 130ms ease;
+}
+
+.sidebar-rail .sidebar-brand-text {
+  max-width: 0;
+  opacity: 0;
+}
+
+/*
+ * Section headings fold rather than flip to sr-only.
+ *
+ * They stay in the accessibility tree either way - the list that each one names
+ * points at it with aria-labelledby, so removing it from the layout must not
+ * remove it from the document.
+ */
+.sidebar-section-heading {
+  overflow: hidden;
+  white-space: nowrap;
+  max-height: 1.5rem;
+  opacity: 1;
+  transition: max-height 200ms cubic-bezier(0.4, 0, 0.2, 1), opacity 130ms ease, padding 200ms ease;
+}
+
+.sidebar-rail .sidebar-section-heading {
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar-column,
+  .sidebar-label,
+  .sidebar-nav-button,
+  .sidebar-brand-text,
+  .sidebar-section-heading { transition: none !important; }
+}
+
+/*
+   The shared Tabs component (shared/components/ui/Tabs.jsx).
+
+   Hover and :focus-visible cannot be expressed in a style object, so they live
+   here — the same split the buttons and the profile tabs already use. Every
+   hand-rolled tab row this component replaced had no hover state at all, and
+   the keyboard focus ring was whatever the browser drew by default.
+*/
+.ui-tab:hover:not(:disabled):not([aria-selected="true"]) {
+  color: var(--text-primary);
+}
+
+.ui-tab:focus-visible {
+  outline: 2px solid var(--brand-600);
+  outline-offset: 2px;
+}
+
+/*
+   Card's `interactive` prop (shared/components/ui/Card.jsx).
+
+   The component has emitted this class since it was written and nothing ever
+   defined it, so `interactive` was a prop that did nothing: the card took a
+   click and never said it could be clicked. Defined here rather than inline for
+   the usual reason -- :hover and :focus-visible do not exist in a style object.
+
+   Deliberately the same lift as .survey-card above, because they are the same
+   gesture: a card that opens something. Two different hovers for one idea would
+   read as two different kinds of card.
+*/
+.ui-card--interactive {
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+}
+
+/*
+   `border-color` carries !important and the other two do not, which is not
+   arbitrary.
+
+   Both components that emit this class -- Card and StatCard -- set `border`
+   and `box-shadow` as INLINE styles, and an inline declaration beats a class
+   no matter how the class is written. So of the three lines below only
+   `transform` was ever reaching the screen: the border never turned green and
+   the lift never gained its shadow. The rule looked right and did a third of
+   what it said.
+
+   `border-color` is safe to force because every inline border-colour a card
+   sets on top of this is either brand green already (StatCard's selection
+   ring) or a tone tint that SHOULD yield to the hover affordance.
+
+   `box-shadow` deliberately does not force. StatCard draws its selection ring
+   as an inset box-shadow, and an !important here would erase that ring for as
+   long as the pointer sat on the selected card -- trading a shadow for the
+   one piece of state on the row that has to stay visible.
+*/
+.ui-card--interactive:hover:not(:disabled) {
+  border-color: var(--brand-600) !important;
+  box-shadow: 0 6px 20px rgba(2, 6, 23, 0.08);
+  transform: translateY(-2px);
+}
+
+.ui-card--interactive:focus-visible {
+  outline: 2px solid var(--brand-600);
+  outline-offset: 2px;
+}
+
+.ui-card--interactive:disabled { cursor: default; opacity: 0.85; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-card--interactive { transition: none; }
+  .ui-card--interactive:hover:not(:disabled) { transform: none; }
+}

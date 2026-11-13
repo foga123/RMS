@@ -1,0 +1,12 @@
+# auth.php is the gatekeeper: the endpoint-to-module map, the role policy map,
+# the permission overrides and the scoping rules all live here. It is included
+# by every endpoint and requested by none, so serving it only ever gave away
+# the access-control model.
+Require all denied
+
+<IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+</IfModule>
+
+Options -Indexes

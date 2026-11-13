@@ -1,0 +1,22 @@
+# Environment files hold the database password and the SMTP app password.
+# Nothing should ever fetch them over HTTP; PHP reads them from disk.
+<FilesMatch "^\.env">
+    Require all denied
+    # Apache 2.2 fallback
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Loose data files at this level are never served either.
+<FilesMatch "\.(log|sql|json|lock)$">
+    Require all denied
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Never advertise the directory itself.
+Options -Indexes

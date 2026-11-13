@@ -1,0 +1,109 @@
+# react-router owns the URL space, so a deep link has to reach index.html.
+#
+# Without this, /capstone2.0/frontend/build/students is a path Apache looks for
+# on disk, does not find, and 404s. Clicking through the app works, because
+# react-router never asks the server — but refreshing that page, or opening a
+# link someone shared, fails. That is the whole difference between "the app
+# works" and "the app works only if you never press F5".
+#
+# The container has the same rule in docker/apache-vhost.conf, where it can live
+# in the vhost. Under XAMPP there is no vhost to edit, so it lives here.
+#
+# This file sits in public/ rather than build/ because Create React App copies
+# public/ into build/ verbatim on every build. Written into build/ directly it
+# would be deleted by the next `npm run build`.
+#
+# No RewriteBase on purpose: in a per-directory context a relative substitution
+# resolves against this directory, so the same file works at
+# /capstone2.0/frontend/build/ under XAMPP and at the site root elsewhere.
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Real files and directories are served as themselves — the JS bundle, the
+    # CSS, the icons, manifest.json.
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Never swallow an API call. The backend lives outside this directory, so
+    # this should not be reachable, but a 404 from PHP is a diagnosable error
+    # while a silent page of HTML parsed as JSON is not.
+    RewriteCond %{REQUEST_URI} !/backend/
+
+    RewriteRule ^ index.html [L]
+</IfModule>
+
+# ---------------------------------------------------------------------------
+# How long the browser may keep what it just fetched.
+# ---------------------------------------------------------------------------
+# The build is 13 MB of JS and CSS and every byte of it is re-fetched on a
+# reload today, because nothing here says otherwise and Apache falls back to
+# revalidating with a conditional request per file. That is a few hundred
+# round-trips to be told "not modified" — on the campus connection this is meant
+# to run on, it is most of the wait before the dashboard paints.
+#
+# mod_headers rather than mod_expires: headers is the only one of the two that
+# XAMPP loads by default here, and the rules below are absolute anyway
+# ("immutable", "no-cache") rather than relative to access time, so Expires
+# would buy nothing.
+#
+# The ORDER of these three blocks matters. Apache applies every matching
+# <FilesMatch> in file order and `Header set` overwrites, so the last match
+# wins — the hashed rule sits after the generic one deliberately, because a
+# fingerprinted image (static/media/logo.a1b2c3d4.png) matches both and should
+# come away immutable, not one-day.
+<IfModule mod_headers.c>
+
+    # Unhashed assets: the favicons, the logos, anything copied verbatim out of
+    # public/. The NAME never changes when the file does, so these can only be
+    # revalidated, never pinned. A day is short enough that replacing a logo
+    # reaches everyone by tomorrow without being asked for on every page.
+    <FilesMatch "\.(ico|png|jpe?g|gif|svg|webp|woff2?|ttf|eot)$">
+        Header set Cache-Control "public, max-age=86400"
+    </FilesMatch>
+
+    # Content-hashed by the build. `main.71394161.css`, `1198.b35d1625.chunk.js`
+    # — the 8 hex digits ARE a checksum of the contents, so the name cannot
+    # survive an edit. That makes a year safe, and `immutable` stops the browser
+    # even sending the conditional request.
+    #
+    # Matched on the hash rather than on the /static/ folder, because a folder
+    # rule would also pin anything a later hand drops in there unhashed, and the
+    # failure mode of pinning an unhashed file for a year is a user stuck on a
+    # stale bundle with no way to ask for a new one.
+    <FilesMatch "\.[0-9a-f]{8}\.(chunk\.)?(js|css|png|jpe?g|gif|svg|webp|woff2?)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # The app shell and the two manifests, which NAME the hashed files above.
+    # These are the one thing that must never be held: a cached index.html
+    # points at the previous build's bundles forever, and the user has no way to
+    # discover that a deploy happened. `no-cache` still allows a 304 — it means
+    # "ask first", not "do not store".
+    <FilesMatch "^(index\.html|asset-manifest\.json|manifest\.json|robots\.txt)$">
+        Header set Cache-Control "no-cache"
+    </FilesMatch>
+
+</IfModule>
+
+# ---------------------------------------------------------------------------
+# Compression.
+# ---------------------------------------------------------------------------
+# Text compresses by roughly 3-4x, and this build is mostly text.
+#
+# Both guards are load-bearing: in Apache 2.4 AddOutputFilterByType is provided
+# by mod_filter, not by mod_deflate, so a deflate-only guard passes on a server
+# where filter is off and then fails to parse. XAMPP ships BOTH commented out —
+# if this block is doing nothing, that is why; uncomment mod_deflate and
+# mod_filter in apache/conf/httpd.conf and restart.
+#
+# Images and fonts are left out on purpose. woff2, png and jpeg are already
+# compressed, and running deflate over them costs CPU to add bytes.
+<IfModule mod_deflate.c>
+    <IfModule mod_filter.c>
+        AddOutputFilterByType DEFLATE text/html text/plain text/css
+        AddOutputFilterByType DEFLATE text/javascript application/javascript
+        AddOutputFilterByType DEFLATE application/json application/manifest+json
+        AddOutputFilterByType DEFLATE image/svg+xml
+    </IfModule>
+</IfModule>

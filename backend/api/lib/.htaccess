@@ -1,0 +1,9 @@
+# Shared parsing helpers for the importers; included, never requested.
+Require all denied
+
+<IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+</IfModule>
+
+Options -Indexes

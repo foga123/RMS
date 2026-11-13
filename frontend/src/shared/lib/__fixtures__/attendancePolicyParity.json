@@ -1,0 +1,1199 @@
+{
+    "cases": [
+        {
+            "target": null,
+            "row": {
+                "total_classes_conducted": 0,
+                "present": 0,
+                "absent": 0
+            },
+            "signals": {
+                "absent": 0,
+                "present": 0,
+                "total_classes_conducted": 0,
+                "attendance_rate": null,
+                "absence_rate": null,
+                "absences_over_target": null,
+                "meets_target": null
+            }
+        },
+        {
+            "target": null,
+            "row": {
+                "total_classes_conducted": 44,
+                "present": 44,
+                "absent": 0
+            },
+            "signals": {
+                "absent": 0,
+                "present": 44,
+                "total_classes_conducted": 44,
+                "attendance_rate": 100,
+                "absence_rate": 0,
+                "absences_over_target": null,
+                "meets_target": null
+            }
+        },
+        {
+            "target": null,
+            "row": {
+                "total_classes_conducted": 44,
+                "present": 39,
+                "absent": 5
+            },
+            "signals": {
+                "absent": 5,
+                "present": 39,
+                "total_classes_conducted": 44,
+                "attendance_rate": 88.63636363636364,
+                "absence_rate": 11.363636363636363,
+                "absences_over_target": null,
+                "meets_target": null
+            }
+        },
+        {
+            "target": null,
+            "row": {
+                "total_classes_conducted": 44,
+                "present": 36,
+                "absent": 8
+            },
+            "signals": {
+                "absent": 8,
+                "present": 36,
+                "total_classes_conducted": 44,
+                "attendance_rate": 81.81818181818183,
+                "absence_rate": 18.181818181818183,
+                "absences_over_target": null,
+                "meets_target": null
+            }
+        },
+        {
+            "target": null,
+            "row": {
+                "total_classes_conducted": 44,
+                "present": 35,
+                "absent": 9
+            },
+            "signals": {
+                "absent": 9,
+                "present": 35,
+                "total_classes_conducted": 44,
+                "attendance_rate": 79.54545454545455,
+                "absence_rate": 20.454545454545457,
+                "absences_over_target": null,
+                "meets_target": null
+            }
+        },
+        {
+            "target": null,
+            "row": {
+                "total_classes_conducted": 12,
+                "present": 9,
+                "absent": 3
+            },
+            "signals": {
+                "absent": 3,
+                "present": 9,
+                "total_classes_conducted": 12,
+                "attendance_rate": 75,
+                "absence_rate": 25,
+                "absences_over_target": null,
+                "meets_target": null
+            }
+        },
+        {
+            "target": null,
+            "row": {
+                "total_classes_conducted": 15,
+                "present": 12,
+                "absent": 3
+            },
+            "signals": {
+                "absent": 3,
+                "present": 12,
+                "total_classes_conducted": 15,
+                "attendance_rate": 80,
+                "absence_rate": 20,
+                "absences_over_target": null,
+                "meets_target": null
+            }
+        },
+        {
+            "target": null,
+            "row": {
+                "total_classes_conducted": 10,
+                "present": 8,
+                "absent": 2
+            },
+            "signals": {
+                "absent": 2,
+                "present": 8,
+                "total_classes_conducted": 10,
+                "attendance_rate": 80,
+                "absence_rate": 20,
+                "absences_over_target": null,
+                "meets_target": null
+            }
+        },
+        {
+            "target": null,
+            "row": {
+                "total_classes_conducted": 5,
+                "present": 4,
+                "absent": 1
+            },
+            "signals": {
+                "absent": 1,
+                "present": 4,
+                "total_classes_conducted": 5,
+                "attendance_rate": 80,
+                "absence_rate": 20,
+                "absences_over_target": null,
+                "meets_target": null
+            }
+        },
+        {
+            "target": null,
+            "row": {
+                "total_classes_conducted": 50,
+                "present": 40,
+                "absent": 10
+            },
+            "signals": {
+                "absent": 10,
+                "present": 40,
+                "total_classes_conducted": 50,
+                "attendance_rate": 80,
+                "absence_rate": 20,
+                "absences_over_target": null,
+                "meets_target": null
+            }
+        },
+        {
+            "target": null,
+            "row": {
+                "total_classes_conducted": 3,
+                "present": 0,
+                "absent": 3
+            },
+            "signals": {
+                "absent": 3,
+                "present": 0,
+                "total_classes_conducted": 3,
+                "attendance_rate": 0,
+                "absence_rate": 100,
+                "absences_over_target": null,
+                "meets_target": null
+            }
+        },
+        {
+            "target": {
+                "max_absences": 8,
+                "min_rate": 80
+            },
+            "row": {
+                "total_classes_conducted": 0,
+                "present": 0,
+                "absent": 0
+            },
+            "signals": {
+                "absent": 0,
+                "present": 0,
+                "total_classes_conducted": 0,
+                "attendance_rate": null,
+                "absence_rate": null,
+                "absences_over_target": -8,
+                "meets_target": null
+            }
+        },
+        {
+            "target": {
+                "max_absences": 8,
+                "min_rate": 80
+            },
+            "row": {
+                "total_classes_conducted": 44,
+                "present": 44,
+                "absent": 0
+            },
+            "signals": {
+                "absent": 0,
+                "present": 44,
+                "total_classes_conducted": 44,
+                "attendance_rate": 100,
+                "absence_rate": 0,
+                "absences_over_target": -8,
+                "meets_target": 1
+            }
+        },
+        {
+            "target": {
+                "max_absences": 8,
+                "min_rate": 80
+            },
+            "row": {
+                "total_classes_conducted": 44,
+                "present": 39,
+                "absent": 5
+            },
+            "signals": {
+                "absent": 5,
+                "present": 39,
+                "total_classes_conducted": 44,
+                "attendance_rate": 88.63636363636364,
+                "absence_rate": 11.363636363636363,
+                "absences_over_target": -3,
+                "meets_target": 1
+            }
+        },
+        {
+            "target": {
+                "max_absences": 8,
+                "min_rate": 80
+            },
+            "row": {
+                "total_classes_conducted": 44,
+                "present": 36,
+                "absent": 8
+            },
+            "signals": {
+                "absent": 8,
+                "present": 36,
+                "total_classes_conducted": 44,
+                "attendance_rate": 81.81818181818183,
+                "absence_rate": 18.181818181818183,
+                "absences_over_target": 0,
+                "meets_target": 1
+            }
+        },
+        {
+            "target": {
+                "max_absences": 8,
+                "min_rate": 80
+            },
+            "row": {
+                "total_classes_conducted": 44,
+                "present": 35,
+                "absent": 9
+            },
+            "signals": {
+                "absent": 9,
+                "present": 35,
+                "total_classes_conducted": 44,
+                "attendance_rate": 79.54545454545455,
+                "absence_rate": 20.454545454545457,
+                "absences_over_target": 1,
+                "meets_target": 0
+            }
+        },
+        {
+            "target": {
+                "max_absences": 8,
+                "min_rate": 80
+            },
+            "row": {
+                "total_classes_conducted": 12,
+                "present": 9,
+                "absent": 3
+            },
+            "signals": {
+                "absent": 3,
+                "present": 9,
+                "total_classes_conducted": 12,
+                "attendance_rate": 75,
+                "absence_rate": 25,
+                "absences_over_target": -5,
+                "meets_target": 0
+            }
+        },
+        {
+            "target": {
+                "max_absences": 8,
+                "min_rate": 80
+            },
+            "row": {
+                "total_classes_conducted": 15,
+                "present": 12,
+                "absent": 3
+            },
+            "signals": {
+                "absent": 3,
+                "present": 12,
+                "total_classes_conducted": 15,
+                "attendance_rate": 80,
+                "absence_rate": 20,
+                "absences_over_target": -5,
+                "meets_target": 1
+            }
+        },
+        {
+            "target": {
+                "max_absences": 8,
+                "min_rate": 80
+            },
+            "row": {
+                "total_classes_conducted": 10,
+                "present": 8,
+                "absent": 2
+            },
+            "signals": {
+                "absent": 2,
+                "present": 8,
+                "total_classes_conducted": 10,
+                "attendance_rate": 80,
+                "absence_rate": 20,
+                "absences_over_target": -6,
+                "meets_target": 1
+            }
+        },
+        {
+            "target": {
+                "max_absences": 8,
+                "min_rate": 80
+            },
+            "row": {
+                "total_classes_conducted": 5,
+                "present": 4,
+                "absent": 1
+            },
+            "signals": {
+                "absent": 1,
+                "present": 4,
+                "total_classes_conducted": 5,
+                "attendance_rate": 80,
+                "absence_rate": 20,
+                "absences_over_target": -7,
+                "meets_target": 1
+            }
+        },
+        {
+            "target": {
+                "max_absences": 8,
+                "min_rate": 80
+            },
+            "row": {
+                "total_classes_conducted": 50,
+                "present": 40,
+                "absent": 10
+            },
+            "signals": {
+                "absent": 10,
+                "present": 40,
+                "total_classes_conducted": 50,
+                "attendance_rate": 80,
+                "absence_rate": 20,
+                "absences_over_target": 2,
+                "meets_target": 0
+            }
+        },
+        {
+            "target": {
+                "max_absences": 8,
+                "min_rate": 80
+            },
+            "row": {
+                "total_classes_conducted": 3,
+                "present": 0,
+                "absent": 3
+            },
+            "signals": {
+                "absent": 3,
+                "present": 0,
+                "total_classes_conducted": 3,
+                "attendance_rate": 0,
+                "absence_rate": 100,
+                "absences_over_target": -5,
+                "meets_target": 0
+            }
+        },
+        {
+            "target": {
+                "max_absences": 8,
+                "min_rate": null
+            },
+            "row": {
+                "total_classes_conducted": 0,
+                "present": 0,
+                "absent": 0
+            },
+            "signals": {
+                "absent": 0,
+                "present": 0,
+                "total_classes_conducted": 0,
+                "attendance_rate": null,
+                "absence_rate": null,
+                "absences_over_target": -8,
+                "meets_target": null
+            }
+        },
+        {
+            "target": {
+                "max_absences": 8,
+                "min_rate": null
+            },
+            "row": {
+                "total_classes_conducted": 44,
+                "present": 44,
+                "absent": 0
+            },
+            "signals": {
+                "absent": 0,
+                "present": 44,
+                "total_classes_conducted": 44,
+                "attendance_rate": 100,
+                "absence_rate": 0,
+                "absences_over_target": -8,
+                "meets_target": 1
+            }
+        },
+        {
+            "target": {
+                "max_absences": 8,
+                "min_rate": null
+            },
+            "row": {
+                "total_classes_conducted": 44,
+                "present": 39,
+                "absent": 5
+            },
+            "signals": {
+                "absent": 5,
+                "present": 39,
+                "total_classes_conducted": 44,
+                "attendance_rate": 88.63636363636364,
+                "absence_rate": 11.363636363636363,
+                "absences_over_target": -3,
+                "meets_target": 1
+            }
+        },
+        {
+            "target": {
+                "max_absences": 8,
+                "min_rate": null
+            },
+            "row": {
+                "total_classes_conducted": 44,
+                "present": 36,
+                "absent": 8
+            },
+            "signals": {
+                "absent": 8,
+                "present": 36,
+                "total_classes_conducted": 44,
+                "attendance_rate": 81.81818181818183,
+                "absence_rate": 18.181818181818183,
+                "absences_over_target": 0,
+                "meets_target": 1
+            }
+        },
+        {
+            "target": {
+                "max_absences": 8,
+                "min_rate": null
+            },
+            "row": {
+                "total_classes_conducted": 44,
+                "present": 35,
+                "absent": 9
+            },
+            "signals": {
+                "absent": 9,
+                "present": 35,
+                "total_classes_conducted": 44,
+                "attendance_rate": 79.54545454545455,
+                "absence_rate": 20.454545454545457,
+                "absences_over_target": 1,
+                "meets_target": 0
+            }
+        },
+        {
+            "target": {
+                "max_absences": 8,
+                "min_rate": null
+            },
+            "row": {
+                "total_classes_conducted": 12,
+                "present": 9,
+                "absent": 3
+            },
+            "signals": {
+                "absent": 3,
+                "present": 9,
+                "total_classes_conducted": 12,
+                "attendance_rate": 75,
+                "absence_rate": 25,
+                "absences_over_target": -5,
+                "meets_target": 1
+            }
+        },
+        {
+            "target": {
+                "max_absences": 8,
+                "min_rate": null
+            },
+            "row": {
+                "total_classes_conducted": 15,
+                "present": 12,
+                "absent": 3
+            },
+            "signals": {
+                "absent": 3,
+                "present": 12,
+                "total_classes_conducted": 15,
+                "attendance_rate": 80,
+                "absence_rate": 20,
+                "absences_over_target": -5,
+                "meets_target": 1
+            }
+        },
+        {
+            "target": {
+                "max_absences": 8,
+                "min_rate": null
+            },
+            "row": {
+                "total_classes_conducted": 10,
+                "present": 8,
+                "absent": 2
+            },
+            "signals": {
+                "absent": 2,
+                "present": 8,
+                "total_classes_conducted": 10,
+                "attendance_rate": 80,
+                "absence_rate": 20,
+                "absences_over_target": -6,
+                "meets_target": 1
+            }
+        },
+        {
+            "target": {
+                "max_absences": 8,
+                "min_rate": null
+            },
+            "row": {
+                "total_classes_conducted": 5,
+                "present": 4,
+                "absent": 1
+            },
+            "signals": {
+                "absent": 1,
+                "present": 4,
+                "total_classes_conducted": 5,
+                "attendance_rate": 80,
+                "absence_rate": 20,
+                "absences_over_target": -7,
+                "meets_target": 1
+            }
+        },
+        {
+            "target": {
+                "max_absences": 8,
+                "min_rate": null
+            },
+            "row": {
+                "total_classes_conducted": 50,
+                "present": 40,
+                "absent": 10
+            },
+            "signals": {
+                "absent": 10,
+                "present": 40,
+                "total_classes_conducted": 50,
+                "attendance_rate": 80,
+                "absence_rate": 20,
+                "absences_over_target": 2,
+                "meets_target": 0
+            }
+        },
+        {
+            "target": {
+                "max_absences": 8,
+                "min_rate": null
+            },
+            "row": {
+                "total_classes_conducted": 3,
+                "present": 0,
+                "absent": 3
+            },
+            "signals": {
+                "absent": 3,
+                "present": 0,
+                "total_classes_conducted": 3,
+                "attendance_rate": 0,
+                "absence_rate": 100,
+                "absences_over_target": -5,
+                "meets_target": 1
+            }
+        },
+        {
+            "target": {
+                "max_absences": null,
+                "min_rate": 80
+            },
+            "row": {
+                "total_classes_conducted": 0,
+                "present": 0,
+                "absent": 0
+            },
+            "signals": {
+                "absent": 0,
+                "present": 0,
+                "total_classes_conducted": 0,
+                "attendance_rate": null,
+                "absence_rate": null,
+                "absences_over_target": null,
+                "meets_target": null
+            }
+        },
+        {
+            "target": {
+                "max_absences": null,
+                "min_rate": 80
+            },
+            "row": {
+                "total_classes_conducted": 44,
+                "present": 44,
+                "absent": 0
+            },
+            "signals": {
+                "absent": 0,
+                "present": 44,
+                "total_classes_conducted": 44,
+                "attendance_rate": 100,
+                "absence_rate": 0,
+                "absences_over_target": null,
+                "meets_target": 1
+            }
+        },
+        {
+            "target": {
+                "max_absences": null,
+                "min_rate": 80
+            },
+            "row": {
+                "total_classes_conducted": 44,
+                "present": 39,
+                "absent": 5
+            },
+            "signals": {
+                "absent": 5,
+                "present": 39,
+                "total_classes_conducted": 44,
+                "attendance_rate": 88.63636363636364,
+                "absence_rate": 11.363636363636363,
+                "absences_over_target": null,
+                "meets_target": 1
+            }
+        },
+        {
+            "target": {
+                "max_absences": null,
+                "min_rate": 80
+            },
+            "row": {
+                "total_classes_conducted": 44,
+                "present": 36,
+                "absent": 8
+            },
+            "signals": {
+                "absent": 8,
+                "present": 36,
+                "total_classes_conducted": 44,
+                "attendance_rate": 81.81818181818183,
+                "absence_rate": 18.181818181818183,
+                "absences_over_target": null,
+                "meets_target": 1
+            }
+        },
+        {
+            "target": {
+                "max_absences": null,
+                "min_rate": 80
+            },
+            "row": {
+                "total_classes_conducted": 44,
+                "present": 35,
+                "absent": 9
+            },
+            "signals": {
+                "absent": 9,
+                "present": 35,
+                "total_classes_conducted": 44,
+                "attendance_rate": 79.54545454545455,
+                "absence_rate": 20.454545454545457,
+                "absences_over_target": null,
+                "meets_target": 0
+            }
+        },
+        {
+            "target": {
+                "max_absences": null,
+                "min_rate": 80
+            },
+            "row": {
+                "total_classes_conducted": 12,
+                "present": 9,
+                "absent": 3
+            },
+            "signals": {
+                "absent": 3,
+                "present": 9,
+                "total_classes_conducted": 12,
+                "attendance_rate": 75,
+                "absence_rate": 25,
+                "absences_over_target": null,
+                "meets_target": 0
+            }
+        },
+        {
+            "target": {
+                "max_absences": null,
+                "min_rate": 80
+            },
+            "row": {
+                "total_classes_conducted": 15,
+                "present": 12,
+                "absent": 3
+            },
+            "signals": {
+                "absent": 3,
+                "present": 12,
+                "total_classes_conducted": 15,
+                "attendance_rate": 80,
+                "absence_rate": 20,
+                "absences_over_target": null,
+                "meets_target": 1
+            }
+        },
+        {
+            "target": {
+                "max_absences": null,
+                "min_rate": 80
+            },
+            "row": {
+                "total_classes_conducted": 10,
+                "present": 8,
+                "absent": 2
+            },
+            "signals": {
+                "absent": 2,
+                "present": 8,
+                "total_classes_conducted": 10,
+                "attendance_rate": 80,
+                "absence_rate": 20,
+                "absences_over_target": null,
+                "meets_target": 1
+            }
+        },
+        {
+            "target": {
+                "max_absences": null,
+                "min_rate": 80
+            },
+            "row": {
+                "total_classes_conducted": 5,
+                "present": 4,
+                "absent": 1
+            },
+            "signals": {
+                "absent": 1,
+                "present": 4,
+                "total_classes_conducted": 5,
+                "attendance_rate": 80,
+                "absence_rate": 20,
+                "absences_over_target": null,
+                "meets_target": 1
+            }
+        },
+        {
+            "target": {
+                "max_absences": null,
+                "min_rate": 80
+            },
+            "row": {
+                "total_classes_conducted": 50,
+                "present": 40,
+                "absent": 10
+            },
+            "signals": {
+                "absent": 10,
+                "present": 40,
+                "total_classes_conducted": 50,
+                "attendance_rate": 80,
+                "absence_rate": 20,
+                "absences_over_target": null,
+                "meets_target": 1
+            }
+        },
+        {
+            "target": {
+                "max_absences": null,
+                "min_rate": 80
+            },
+            "row": {
+                "total_classes_conducted": 3,
+                "present": 0,
+                "absent": 3
+            },
+            "signals": {
+                "absent": 3,
+                "present": 0,
+                "total_classes_conducted": 3,
+                "attendance_rate": 0,
+                "absence_rate": 100,
+                "absences_over_target": null,
+                "meets_target": 0
+            }
+        },
+        {
+            "target": {
+                "max_absences": 0,
+                "min_rate": 100
+            },
+            "row": {
+                "total_classes_conducted": 0,
+                "present": 0,
+                "absent": 0
+            },
+            "signals": {
+                "absent": 0,
+                "present": 0,
+                "total_classes_conducted": 0,
+                "attendance_rate": null,
+                "absence_rate": null,
+                "absences_over_target": 0,
+                "meets_target": null
+            }
+        },
+        {
+            "target": {
+                "max_absences": 0,
+                "min_rate": 100
+            },
+            "row": {
+                "total_classes_conducted": 44,
+                "present": 44,
+                "absent": 0
+            },
+            "signals": {
+                "absent": 0,
+                "present": 44,
+                "total_classes_conducted": 44,
+                "attendance_rate": 100,
+                "absence_rate": 0,
+                "absences_over_target": 0,
+                "meets_target": 1
+            }
+        },
+        {
+            "target": {
+                "max_absences": 0,
+                "min_rate": 100
+            },
+            "row": {
+                "total_classes_conducted": 44,
+                "present": 39,
+                "absent": 5
+            },
+            "signals": {
+                "absent": 5,
+                "present": 39,
+                "total_classes_conducted": 44,
+                "attendance_rate": 88.63636363636364,
+                "absence_rate": 11.363636363636363,
+                "absences_over_target": 5,
+                "meets_target": 0
+            }
+        },
+        {
+            "target": {
+                "max_absences": 0,
+                "min_rate": 100
+            },
+            "row": {
+                "total_classes_conducted": 44,
+                "present": 36,
+                "absent": 8
+            },
+            "signals": {
+                "absent": 8,
+                "present": 36,
+                "total_classes_conducted": 44,
+                "attendance_rate": 81.81818181818183,
+                "absence_rate": 18.181818181818183,
+                "absences_over_target": 8,
+                "meets_target": 0
+            }
+        },
+        {
+            "target": {
+                "max_absences": 0,
+                "min_rate": 100
+            },
+            "row": {
+                "total_classes_conducted": 44,
+                "present": 35,
+                "absent": 9
+            },
+            "signals": {
+                "absent": 9,
+                "present": 35,
+                "total_classes_conducted": 44,
+                "attendance_rate": 79.54545454545455,
+                "absence_rate": 20.454545454545457,
+                "absences_over_target": 9,
+                "meets_target": 0
+            }
+        },
+        {
+            "target": {
+                "max_absences": 0,
+                "min_rate": 100
+            },
+            "row": {
+                "total_classes_conducted": 12,
+                "present": 9,
+                "absent": 3
+            },
+            "signals": {
+                "absent": 3,
+                "present": 9,
+                "total_classes_conducted": 12,
+                "attendance_rate": 75,
+                "absence_rate": 25,
+                "absences_over_target": 3,
+                "meets_target": 0
+            }
+        },
+        {
+            "target": {
+                "max_absences": 0,
+                "min_rate": 100
+            },
+            "row": {
+                "total_classes_conducted": 15,
+                "present": 12,
+                "absent": 3
+            },
+            "signals": {
+                "absent": 3,
+                "present": 12,
+                "total_classes_conducted": 15,
+                "attendance_rate": 80,
+                "absence_rate": 20,
+                "absences_over_target": 3,
+                "meets_target": 0
+            }
+        },
+        {
+            "target": {
+                "max_absences": 0,
+                "min_rate": 100
+            },
+            "row": {
+                "total_classes_conducted": 10,
+                "present": 8,
+                "absent": 2
+            },
+            "signals": {
+                "absent": 2,
+                "present": 8,
+                "total_classes_conducted": 10,
+                "attendance_rate": 80,
+                "absence_rate": 20,
+                "absences_over_target": 2,
+                "meets_target": 0
+            }
+        },
+        {
+            "target": {
+                "max_absences": 0,
+                "min_rate": 100
+            },
+            "row": {
+                "total_classes_conducted": 5,
+                "present": 4,
+                "absent": 1
+            },
+            "signals": {
+                "absent": 1,
+                "present": 4,
+                "total_classes_conducted": 5,
+                "attendance_rate": 80,
+                "absence_rate": 20,
+                "absences_over_target": 1,
+                "meets_target": 0
+            }
+        },
+        {
+            "target": {
+                "max_absences": 0,
+                "min_rate": 100
+            },
+            "row": {
+                "total_classes_conducted": 50,
+                "present": 40,
+                "absent": 10
+            },
+            "signals": {
+                "absent": 10,
+                "present": 40,
+                "total_classes_conducted": 50,
+                "attendance_rate": 80,
+                "absence_rate": 20,
+                "absences_over_target": 10,
+                "meets_target": 0
+            }
+        },
+        {
+            "target": {
+                "max_absences": 0,
+                "min_rate": 100
+            },
+            "row": {
+                "total_classes_conducted": 3,
+                "present": 0,
+                "absent": 3
+            },
+            "signals": {
+                "absent": 3,
+                "present": 0,
+                "total_classes_conducted": 3,
+                "attendance_rate": 0,
+                "absence_rate": 100,
+                "absences_over_target": 3,
+                "meets_target": 0
+            }
+        }
+    ],
+    "policy": {
+        "target_max_absences": 8,
+        "target_min_rate": 80,
+        "rules": [
+            {
+                "remark_id": 9,
+                "remark_name": "Excessive Absences",
+                "label": "Past the absence target",
+                "conditions": [
+                    {
+                        "field_key": "meets_target",
+                        "operator": "eq",
+                        "value_min": 0,
+                        "value_max": null
+                    }
+                ]
+            },
+            {
+                "remark_id": 8,
+                "remark_name": "Attendance Warning",
+                "label": "Within two absences of the target",
+                "conditions": [
+                    {
+                        "field_key": "absences_over_target",
+                        "operator": "gte",
+                        "value_min": -2,
+                        "value_max": null
+                    }
+                ]
+            },
+            {
+                "remark_id": 7,
+                "remark_name": "Meets Attendance Target",
+                "label": "Everything else",
+                "conditions": []
+            }
+        ]
+    },
+    "verdicts": [
+        {
+            "row": {
+                "total_classes_conducted": 0,
+                "present": 0,
+                "absent": 0
+            },
+            "remark_id": null
+        },
+        {
+            "row": {
+                "total_classes_conducted": 44,
+                "present": 44,
+                "absent": 0
+            },
+            "remark_id": 7
+        },
+        {
+            "row": {
+                "total_classes_conducted": 44,
+                "present": 39,
+                "absent": 5
+            },
+            "remark_id": 7
+        },
+        {
+            "row": {
+                "total_classes_conducted": 44,
+                "present": 36,
+                "absent": 8
+            },
+            "remark_id": 8
+        },
+        {
+            "row": {
+                "total_classes_conducted": 44,
+                "present": 35,
+                "absent": 9
+            },
+            "remark_id": 9
+        },
+        {
+            "row": {
+                "total_classes_conducted": 12,
+                "present": 9,
+                "absent": 3
+            },
+            "remark_id": 9
+        },
+        {
+            "row": {
+                "total_classes_conducted": 15,
+                "present": 12,
+                "absent": 3
+            },
+            "remark_id": 7
+        },
+        {
+            "row": {
+                "total_classes_conducted": 10,
+                "present": 8,
+                "absent": 2
+            },
+            "remark_id": 7
+        },
+        {
+            "row": {
+                "total_classes_conducted": 5,
+                "present": 4,
+                "absent": 1
+            },
+            "remark_id": 7
+        },
+        {
+            "row": {
+                "total_classes_conducted": 50,
+                "present": 40,
+                "absent": 10
+            },
+            "remark_id": 9
+        },
+        {
+            "row": {
+                "total_classes_conducted": 3,
+                "present": 0,
+                "absent": 3
+            },
+            "remark_id": 9
+        }
+    ]
+}

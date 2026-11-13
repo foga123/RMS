@@ -1,0 +1,9 @@
+Options -Indexes
+RewriteEngine On
+# The real frontend uses /frontend/backend API URLs; keep a separated backend.
+RewriteRule ^frontend/backend/(.*)$ backend/$1 [L]
+# Internal code, dependencies and database definitions are never public URLs.
+RewriteRule ^(?:database|tools|backend/storage|backend/vendor|backend/api/middleware|backend/api/lib)(?:/|$) - [F,L,NC]
+<FilesMatch "(^\.|\.(?:sql|log|zip|lock|json|md)$)">
+  Require all denied
+</FilesMatch>

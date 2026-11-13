@@ -1,0 +1,17 @@
+# These files only ever get `require`d by an endpoint. Requesting one directly
+# executes a file of function definitions and returns an empty 200 - harmless
+# today, but it is surface area with no reason to exist, and it hands out the
+# source layout for free.
+#
+# Names are anchored and listed in full on purpose: `risk_model_service.php` is
+# a library, while `risk_model.php` is a real endpoint, and a loose pattern
+# would take both. Everything not named here stays reachable.
+<FilesMatch "^(connection-pdo|attendance_remark_service|backup_service|captcha_policy_service|contact_vocabulary|grade_remark_service|mail_config|mail_template|notification_service|password_expiration_service|password_reset_codes|pdo_priority_lib|periodic_lib|risk_model_service|session_policy_service|student_contact_workflow_lib|term_snapshot_lib)\.php$">
+    Require all denied
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+Options -Indexes
